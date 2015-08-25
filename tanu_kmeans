@@ -1,0 +1,109 @@
+
+function tanu_kmeans
+N=[1 1; 2 5;1 9;4 5; 10 4; 5 8;7 6; 16 5; 6 10; 8 2; 9 3;11 2;15 5 ;20 6]
+[m n]=size(N) %return the dimension of data matrix
+
+ 
+k = 3;
+c =[2 2;10 8;14 5] % centroid matrix
+[p q] = size(c)
+figure()
+%plot(c)
+%scatter(c(1:end,:),c(:,1:end),100,'r')
+
+plot(N(:,1),N(:,2),'r.','MarkerSize',18)
+hold on
+title('initial Data and Center Location');
+plot(c(:,1),c(:,2),'ko',...
+    'MarkerSize',15,'LineWidth',2,'MarkerFaceColor','y');
+plot(c(:,1),c(:,2),'kx',...
+     'MarkerSize',25,'LineWidth',2,'MarkerEdgeColor','k')
+legend(' data in 2-d','Cluster center',...
+      'Location','NW')
+ 
+
+%initial clustering center
+clust1 = zeros(m,n);
+clust2= zeros(m,n);
+clust3= zeros(m,n);
+
+
+
+for zz=1:3 % total iteration 
+    for i=1:m %total point, i.e, total row number
+     
+      cnt= 10000000;
+     for j=1:p 
+        
+        
+        mini_dist =((N(i,1)-c(j,1))^2) +((N(i,2)-c(j,2))^2); % finding minimum distant each point
+        
+        mini_dist = sqrt(mini_dist);
+        % plot(N(i,:),(N(,:1'b',markerSize',13);
+        if mini_dist<cnt  cnt=mini_dist; % keep tracking of minimum distant
+            disp(cnt);
+            l=j;
+            
+            
+        end
+       
+        
+     end
+     % assign to centers
+     if l==1 clust1(i,1)= N(i,1); clust1(i,2)= N(i,2); end
+     if l==2 clust2(i,1)=N(i,1); clust2(i,2)= N(i,2);  end
+            
+        if   l==3 clust3(i,1)= N(i,1); clust3(i,2)= N(i,2);   end        
+         
+             
+         
+     
+     
+     clust1_size =0;
+     clust2_size =0;
+     clust3_size =0;
+     %find out the cluster size and check that if center is unchanged or
+     %not i.e, assign or not to a point for a particular cluster
+     [a b] = size(clust1);
+     if (a==1 && b==2)
+      clust1_size =1;
+     end
+     
+     [a b] = size(clust2);
+     if (a==1 && b==2)
+      clust2_size =1;
+     end
+     [a b] = size(clust3);
+     if (a==1 && b==2)
+      clust3_size =1;
+     end
+      
+    end 
+     % find the mean matrix for each cluster and update if changed
+     if  clust1_size ~= 1   clust1_mean= mean(clust1);   c(1,:)= clust1_mean(1,:); end
+      if(clust2_size ~= 1)   clust2_mean= mean(clust2);   c(2,:)= clust2_mean(1,:); end
+      if(clust3_size ~=1 )  clust3_mean= mean(clust3);  c(3,:)= clust3_mean(1,:); end
+       
+        
+
+  figure();
+     plot(clust1(:,1),clust1(:,2),'r.','MarkerSize',18)
+hold on
+
+plot(clust2(:,1),clust2(:,2),'b.','MarkerSize',18)
+
+
+plot(clust3(:,1),clust3(:,2),'g.','MarkerSize',18)
+
+plot(c(:,1),c(:,2),'ko',...
+    'MarkerSize',15,'LineWidth',2,'MarkerFaceColor','y')
+plot(c(:,1),c(:,2),'kx',...
+     'MarkerSize',25,'LineWidth',2,'MarkerEdgeColor','k')
+legend('Cluster 1','Cluster 2','cluster 3','Center',...
+      'Location','NW')
+  if zz==1 title('After first iteration'); end
+   if zz==2 title('After Second iteration'); end
+    if zz==3 title('After third iteration'); end
+end
+end
+ 
